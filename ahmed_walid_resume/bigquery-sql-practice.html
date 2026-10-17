@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SQL &amp; Data Cleaning Practice — Ahmed Walid Mohamed</title>
+<meta name="description" content="BigQuery SQL practice: aggregation, CTEs and window functions on a cars dataset, plus a structured data-cleaning checklist.">
+<link rel="canonical" href="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/bigquery-sql-practice.html">
+<meta name="theme-color" content="#14171A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ahmed Walid Mohamed">
+<meta property="og:title" content="SQL &amp; Data Cleaning Practice — Ahmed Walid Mohamed">
+<meta property="og:description" content="BigQuery SQL practice: aggregation, CTEs and window functions on a cars dataset, plus a structured data-cleaning checklist.">
+<meta property="og:url" content="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/bigquery-sql-practice.html">
+<meta property="og:image" content="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ahmed Walid Mohamed — Resume and portfolio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SQL &amp; Data Cleaning Practice — Ahmed Walid Mohamed">
+<meta name="twitter:description" content="BigQuery SQL practice: aggregation, CTEs and window functions on a cars dataset, plus a structured data-cleaning checklist.">
+<meta name="twitter:image" content="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/og-image.png">
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<style>body{font-family:sans-serif;background:#14171A;color:#E7E9EA;margin:0;padding:24px;}a{color:#E8A33D;}.wrap{max-width:800px;margin:0 auto;}.panel>h2{font-size:18px;margin:0 0 10px}.panel{background:#1D2226;border:1px solid #2B3136;border-radius:10px;padding:20px;margin-bottom:16px;}pre{background:#101314;color:#E7E9EA;border-radius:8px;padding:16px;overflow-x:auto;font-size:12px;}.kw{color:#E8A33D;}.fn{color:#7EC8E3;}.cm{color:#7A8590;}.check{display:grid;grid-template-columns:1fr 1fr;gap:8px;}html{-webkit-text-size-adjust:100%}*,*::before,*::after{box-sizing:border-box}.wrap>a:first-child{display:inline-block;padding:13px 0}@media (max-width:600px){body{padding:16px}h1{font-size:24px;line-height:1.25}.panel{padding:16px}pre{font-size:11px}}@media (max-width:480px){.check{grid-template-columns:1fr}}.mini-foot{margin:28px 0 0;font-size:13px;text-align:center}.mini-foot a{display:inline-block;padding:15px 10px}a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid #E8A33D;outline-offset:3px}.skip-link{position:absolute;left:-9999px;top:8px}.skip-link:focus{left:12px;z-index:300;background:#E8A33D;color:#14171A;padding:10px 14px;border-radius:6px;text-decoration:none}</style></head><body><a class="skip-link" href="#main">Skip to content</a><main class="wrap" id="main"><a href="index.html">← Back to portfolio</a><h1>SQL &amp; Data Cleaning Practice — BigQuery</h1><p>Practice against a real dataset: querying, aggregation, joins, subqueries/CTEs, and window functions, plus a structured cleaning checklist.</p><p><b>Project:</b> my-first-pro-504117.cars.cars</p><div class="panel"><h2>Aggregation</h2><pre tabindex="0" role="region" aria-label="Aggregation query"><span class="kw">SELECT</span> manufacturer, <span class="fn">AVG</span>(price) <span class="kw">AS</span> avg_price
+<span class="kw">FROM</span> `my-first-pro-504117.cars.cars`
+<span class="kw">GROUP BY</span> manufacturer <span class="kw">ORDER BY</span> avg_price <span class="kw">DESC</span>;</pre></div><div class="panel"><h2>CTE</h2><pre tabindex="0" role="region" aria-label="CTE query"><span class="kw">WITH</span> mfr_avg <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> manufacturer, <span class="fn">AVG</span>(price) <span class="kw">AS</span> avg_price
+  <span class="kw">FROM</span> `my-first-pro-504117.cars.cars` <span class="kw">GROUP BY</span> manufacturer
+)
+<span class="kw">SELECT</span> c.manufacturer, c.model, c.price
+<span class="kw">FROM</span> `my-first-pro-504117.cars.cars` c
+<span class="kw">JOIN</span> mfr_avg <span class="kw">ON</span> c.manufacturer = mfr_avg.manufacturer
+<span class="kw">WHERE</span> c.price &gt; mfr_avg.avg_price;</pre></div><div class="panel"><h2>Window function</h2><pre tabindex="0" role="region" aria-label="Window function query"><span class="kw">SELECT</span> manufacturer, model, price,
+  <span class="fn">RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> manufacturer <span class="kw">ORDER BY</span> price <span class="kw">DESC</span>) <span class="kw">AS</span> price_rank
+<span class="kw">FROM</span> `my-first-pro-504117.cars.cars`;</pre></div><div class="panel"><h2>Data cleaning pass</h2><pre tabindex="0" role="region" aria-label="Data cleaning query"><span class="cm">-- flag rows missing key fields</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> `my-first-pro-504117.cars.cars`
+<span class="kw">WHERE</span> price <span class="kw">IS NULL</span> <span class="kw">OR</span> manufacturer <span class="kw">IS NULL</span>;
+
+<span class="cm">-- find duplicate listings</span>
+<span class="kw">SELECT</span> manufacturer, model, price, <span class="fn">COUNT</span>(*) <span class="kw">AS</span> dupes
+<span class="kw">FROM</span> `my-first-pro-504117.cars.cars`
+<span class="kw">GROUP BY</span> manufacturer, model, price <span class="kw">HAVING</span> <span class="fn">COUNT</span>(*) &gt; 1;</pre></div><div class="panel"><h2>Cleaning checklist applied</h2><div class="check"><div>✓ Nulls &amp; missing values</div><div>✓ Duplicate rows</div><div>✓ Misspellings</div><div>✓ Mistyped numbers</div><div>✓ Extra spaces</div><div>✓ Mismatched data types</div><div>✓ Inconsistent date formats</div><div>✓ Misleading labels</div><div>✓ Truncated data</div><div>✓ Business logic review</div></div></div><p class="mini-foot"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p></main><script src="site.js" defer data-privacy="privacy.html"></script></body></html>

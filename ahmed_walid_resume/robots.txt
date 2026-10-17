@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/sitemap.xml
