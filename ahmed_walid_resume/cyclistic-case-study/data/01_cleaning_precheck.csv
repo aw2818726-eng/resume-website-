@@ -1,0 +1,2 @@
+total_rows,duplicate_ids,outside_12_month_window,negative_duration,under_1_minute,over_24_hours,null_start_station,null_end_station,test_or_maintenance_stations
+6171785,35,71,29,159192,5324,1289486,1355487,8

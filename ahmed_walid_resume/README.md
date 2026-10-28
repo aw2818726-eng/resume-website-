@@ -11,6 +11,7 @@ A single-page resume and portfolio built with plain HTML, CSS and JavaScript. It
 - **Certifications:** Google Data Analytics Certificate on Coursera (7 of 8 courses completed), each linked to its verification page
 - **Projects:**
   - Data Cleaning Console: a React and SheetJS tool that detects and fixes spreadsheet problems
+  - Cyclistic Case Study: a BigQuery analysis of casual riders vs annual members (Google Data Analytics capstone)
   - Personal Portfolio Website
   - Sample Size Calculator
   - Ain Shams University site (practice build)
@@ -26,6 +27,7 @@ A single-page resume and portfolio built with plain HTML, CSS and JavaScript. It
 ├── personal-portfolio-demo.html
 ├── sample-size-calculator.html
 ├── bigquery-sql-practice.html
+├── cyclistic-case-study/         # case study page, charts, SQL, data, docs
 ├── ain-shams/
 │   ├── index.html
 │   ├── style.css
