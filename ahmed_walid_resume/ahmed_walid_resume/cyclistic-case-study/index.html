@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="analyst">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cyclistic case study | Ahmed Walid Mohamed</title>
+<meta name="description" content="How annual members and casual riders use Cyclistic bikes differently: a BigQuery analysis of 6 million rides.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <a href="../index.html" class="back">Back to portfolio</a>
+  <button id="theme" type="button" aria-label="Switch theme">Recruiter view</button>
+</header>
+<main>
+  <div class="hero">
+    <h1>Casual riders ride longer, on weekends, in summer</h1>
+    <p class="lead">Google Data Analytics capstone. I analyzed 12 months of Cyclistic trip data (Oct 2025 to Sep 2026) in BigQuery to show how annual members and casual riders differ, so marketing can convert casual riders into members.</p>
+    <p class="meta">Ahmed Walid Mohamed. Tools: BigQuery (SQL), Cloud Shell, Chart.js.</p>
+  </div>
+
+  <div class="kpis">
+    <div><b>6.0M</b><span>rides analyzed after cleaning</span></div>
+    <div><b>35.1%</b><span>of rides are casual (2.11M)</span></div>
+    <div><b>18.2 vs 12.2</b><span>average minutes, casual vs member</span></div>
+    <div><b>37.2% vs 23.3%</b><span>of rides on Sat + Sun</span></div>
+  </div>
+
+  <section id="ask"><h2>1. Ask</h2>
+    <p><b>Business task:</b> find how annual members and casual riders use Cyclistic bikes differently, so marketing can design a strategy to convert casual riders into annual members.</p>
+    <p><b>Stakeholders:</b> Lily Moreno (director of marketing), the marketing analytics team, and the executive team, who approve the recommendations.</p>
+  </section>
+
+  <section id="prepare"><h2>2. Prepare</h2>
+    <p>The data is the public Divvy trip data. I used the 12 most recent monthly files (202510 to 202609), each with the same 13 columns: ride_id, rideable_type, started_at, ended_at, start and end station names and IDs, start and end coordinates, and member_casual. Cyclistic is a fictional company, so Divvy is the closest real equivalent.</p>
+    <table>
+      <tr><th>ROCCC</th><th>Assessment</th></tr>
+      <tr><td>Reliable</td><td>Trips are logged automatically. Some records were bad and were removed in cleaning (2.7%).</td></tr>
+      <tr><td>Original</td><td>First-party data published by the operator, Divvy (run by Lyft).</td></tr>
+      <tr><td>Comprehensive</td><td>Every trip for 12 months, but no rider ID, age, gender or pricing, and about 21% of rides have no start station.</td></tr>
+      <tr><td>Current</td><td>Published monthly; the window is the 12 most recent months.</td></tr>
+      <tr><td>Cited</td><td>Published under the operator's data license; cite Divvy/Lyft.</td></tr>
+    </table>
+    <p><b>Privacy:</b> the data has no personal information, so findings describe rides, not individual riders, and cannot show who lives in the area or whether a casual rider has bought multiple passes.</p>
+  </section>
+
+  <section id="process"><h2>3. Process</h2>
+    <p>I loaded all 12 files into BigQuery with an explicit schema, combined them into <code>trips_all_raw</code> (6,171,785 rows) and left that table untouched. All cleaning went into a new table, <code>trips_clean</code> (6,007,147 rides; 164,638 removed, 2.7%).</p>
+    <table>
+      <tr><th>Cleaning rule</th><th>Why</th></tr>
+      <tr><td>Keep rides that started between 2025-10-01 and 2026-09-30</td><td>Removes rides logged in the wrong month's file (71 rows)</td></tr>
+      <tr><td>Remove duplicate ride_ids</td><td>35 duplicates</td></tr>
+      <tr><td>Keep rides lasting 60 seconds to 24 hours</td><td>Removes false starts (159,192), lost bikes (5,324) and negative durations (29)</td></tr>
+      <tr><td>Remove test and maintenance stations</td><td>Not real customer trips (8 rows)</td></tr>
+      <tr><td>Trim text and lowercase member_casual and rideable_type</td><td>Consistent values for grouping</td></tr>
+      <tr><td>Keep rides with missing station names</td><td>Mostly e-bikes; dropping them would bias the comparison, so they are excluded only from the station analysis</td></tr>
+    </table>
+    <p>Timestamps are already Chicago local time, so I did not convert time zones. The SQL for every step is in the <a href="sql/05_analysis_queries.sql">analysis queries</a> and the other scripts linked at the bottom.</p>
+  </section>
+
+  <section id="analyze"><h2>4. Analyze and share</h2>
+    <p>I compared the two groups on ride count, ride length, day, hour, month, bike type and stations.</p>
+
+    <figure><h3>Rides per month</h3>
+      <p class="note">Casual riding falls to about 24k rides in January and climbs to about 346k in July. Members stay much steadier.</p>
+      <div class="box"><canvas id="month" role="img" aria-label="Rides per month, casual vs member"></canvas></div></figure>
+
+    <figure><h3>Casual share of all rides, by month</h3>
+      <p class="note">Casual riders are 40.8% of rides in July but only 17.9% in January.</p>
+      <div class="box"><canvas id="pct" role="img" aria-label="Casual share of rides by month"></canvas></div></figure>
+
+    <figure><h3>Rides by start hour</h3>
+      <p class="note">Members have commuter peaks near 08:00 and 17:00. Casual riders have no morning peak and build to a 17:00 peak, strongest from 15:00 to 18:00.</p>
+      <div class="box"><canvas id="hour" role="img" aria-label="Rides by start hour, casual vs member"></canvas></div></figure>
+
+    <figure><h3>Rides by day of week</h3>
+      <p class="note">Casual rides peak on Saturday (447k). Members peak Tuesday to Thursday and drop on weekends, which fits commuting.</p>
+      <div class="box"><canvas id="day" role="img" aria-label="Rides by day of week, casual vs member"></canvas></div></figure>
+
+    <figure><h3>Average ride length by day of week</h3>
+      <p class="note">Casual rides are longest on Sunday (21.0 min) and Saturday (20.6 min) and always longer than member rides, which stay near 12 minutes. Overall, casual rides are about 49% longer on average.</p>
+      <div class="box"><canvas id="len" role="img" aria-label="Average ride length by day of week"></canvas></div></figure>
+
+    <figure><h3>Top 10 casual start stations</h3>
+      <p class="note">Lakefront and tourist spots dominate. Navy Pier has about 1.7 times the rides of the second station. Rides without a start station are not counted.</p>
+      <div class="box tall"><canvas id="stations" role="img" aria-label="Top 10 casual start stations"></canvas></div></figure>
+
+    <p><b>Bike type is not the difference.</b> Both groups mostly use e-bikes (74.2% of casual rides, 68.3% of member rides), so it is not a strong basis for a recommendation.</p>
+  </section>
+
+  <section id="act"><h2>5. Act: top three recommendations</h2>
+    <ol>
+      <li><b>Target leisure riders at the lakefront stations.</b> Run membership promotions at Navy Pier, Millennium Park, Shedd Aquarium and the other stations where casual riders start most of their rides.</li>
+      <li><b>Time campaigns for season and weekend.</b> Run them from May to September and on weekends, when casual riding peaks. Consider a summer or weekend-focused membership tier.</li>
+      <li><b>Pitch the membership on value for longer, leisure rides.</b> Casual rides are about 49% longer on average, so a cost-per-ride argument fits. Casual riders do not commute, so show that members use bikes for more than commuting.</li>
+    </ol>
+    <h3>Limits of the analysis</h3>
+    <ul>
+      <li>One year of data, so the seasonal pattern is not confirmed across years.</li>
+      <li>The station ranking excludes the roughly 21% of rides with no start station.</li>
+      <li>The data shows ride behavior, not who the riders are, so it cannot say why casual riders choose not to subscribe.</li>
+    </ul>
+  </section>
+
+  <section id="files"><h2>Project files</h2>
+    <p>SQL scripts (<a href="sql/02_union_and_load_check.sql">union and load check</a>, <a href="sql/03_cleaning_precheck.sql">cleaning pre-check</a>, <a href="sql/04_create_trips_clean.sql">clean table</a>, <a href="sql/05_analysis_queries.sql">analysis queries</a>), result tables (<a href="data/02_overall_summary.csv">overall summary CSV</a>) and the <a href="docs/cyclistic_case_study_process_documentation.txt">full process documentation</a>.</p>
+  </section>
+</main>
+<footer>Ahmed Walid Mohamed. Data: public Divvy trip data.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="js/charts.js"></script>
+</body>
+</html>
