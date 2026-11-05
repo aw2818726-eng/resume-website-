@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Born On — Age &amp; Birth-Date Calculator | Ahmed Walid Mohamed</title>
+<meta name="description" content="Enter a date of birth to see exact age, days until the next birthday, a live time-lived counter, milestones, zodiac signs and fun birth-date facts.">
+<link rel="canonical" href="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/born-on.html">
+<meta name="theme-color" content="#ECF0F5">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ahmed Walid Mohamed">
+<meta property="og:title" content="Born On — Age &amp; Birth-Date Calculator">
+<meta property="og:description" content="Enter a date of birth to see exact age, days until the next birthday, a live time-lived counter, milestones, zodiac signs and fun birth-date facts.">
+<meta property="og:url" content="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/born-on.html">
+<meta property="og:image" content="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/og-image.png">
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ground:#ECF0F5;--panel:#FFFFFF;--ink:#121C33;--soft:#4F5E7C;--line:#D2DAE6;--accent:#2D5BE3;--mark:#F5A524;--mark-ink:#2A1A00;--err:#B3261E;
+--fd:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--fb:'Instrument Sans','Segoe UI',system-ui,sans-serif;--fm:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ground:#0C1424;--panel:#131E34;--ink:#E8EEF9;--soft:#9AA9C6;--line:#243251;--accent:#86A3FF;--mark:#F5B544;--err:#FF8A80;color-scheme:dark}}
+:root[data-theme="dark"]{--ground:#0C1424;--panel:#131E34;--ink:#E8EEF9;--soft:#9AA9C6;--line:#243251;--accent:#86A3FF;--mark:#F5B544;--err:#FF8A80;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.5 var(--fb);padding:28px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1040px;margin-inline:auto}
+.eyebrow{font:.8rem var(--fm);color:var(--soft);margin:0 0 10px}
+h1{font:800 clamp(1.9rem,5vw,3.1rem)/1.05 var(--fd);letter-spacing:-.02em;margin:0 0 28px;max-width:20ch;text-wrap:balance}
+h2{font:800 1.4rem var(--fd);margin:0 0 14px;text-wrap:balance}
+section{margin-top:52px}
+.inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:580px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:.8rem;color:var(--soft);font-weight:600}
+.field input{font:1.05rem var(--fm);min-height:48px;padding:10px 14px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;width:100%}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.hint{margin:10px 0 0;font-size:.9rem;color:var(--soft)}
+.error{margin:18px 0 0;color:var(--err);font-weight:600}
+.banner{background:var(--mark);color:var(--mark-ink);font-weight:600;padding:12px 16px;border-radius:10px;margin-top:32px}
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:32px 40px;align-items:start;margin-top:44px}
+@media (max-width:780px){.hero{grid-template-columns:minmax(0,1fr)}}
+.nums{display:flex;flex-wrap:wrap;gap:8px 28px}
+.num b{display:block;font:800 clamp(3rem,13vw,5.6rem)/1 var(--fd);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.num span{color:var(--soft);font-size:.95rem}
+.cal{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;max-width:360px}
+.cal h3{margin:0 0 10px;font:600 1rem var(--fb)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font:.85rem var(--fm)}
+.grid i{font-style:normal;color:var(--soft);padding:4px 0}
+.grid span{padding:7px 0;border-radius:6px}
+.grid .on{background:var(--mark);color:var(--mark-ink);font-weight:500}
+.clock{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;border:1px solid var(--line);background:var(--panel);border-radius:12px}
+.clock div{padding:14px 16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+.clock b{display:block;font:500 1.3rem var(--fm);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.clock span{font-size:.85rem;color:var(--soft)}
+.ledger{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:6px 20px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row dt{color:var(--soft);font-size:.92rem}
+.row dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.row dd small{display:block;font-weight:400;color:var(--soft);font-size:.85rem}
+@media (max-width:520px){.row{grid-template-columns:minmax(0,1fr)}}
+.ms{display:grid;gap:0}
+.ms .row{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}
+.past dd{color:var(--soft)}
+.note{font-size:.85rem;color:var(--soft);margin-top:12px;max-width:62ch}
+.rate{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:16px}
+.meter{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.mh{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.mh b{font:800 2.6rem/1 var(--fd)}
+.mh span{color:var(--soft);font-family:var(--fm)}
+.mh em{margin-left:auto;font-style:normal;font-weight:600;background:var(--mark);color:var(--mark-ink);padding:2px 10px;border-radius:99px;font-size:.85rem}
+.bar{height:8px;background:var(--line);border-radius:99px;margin:12px 0 8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.meter p{margin:0;color:var(--soft);font-size:.9rem}
+@media (prefers-reduced-motion:no-preference){.banner{animation:in .5s ease-out}@keyframes in{from{opacity:0;transform:translateY(6px)}}}
+.site-back{display:inline-block;padding:13px 0;margin-bottom:6px;color:var(--accent);font-weight:600;text-decoration:none}.site-back:hover{text-decoration:underline}.mini-foot{margin:52px 0 0;font-size:13px;text-align:center;color:var(--soft)}.mini-foot a{display:inline-block;padding:15px 10px;color:var(--soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="site-back" href="index.html">← Back to portfolio</a>
+<p class="eyebrow">Age &amp; birth-date calculator</p>
+<h1>Everything your birth date can tell you</h1>
+<div class="inputs">
+<div class="field"><label for="d">Date of birth</label><input id="d" type="date" min="1900-01-01"></div>
+<div class="field"><label for="t">Time of birth (optional)</label><input id="t" type="time"></div>
+</div>
+<p class="hint">Pick your date. The results appear below and the live clock keeps counting.</p>
+<p class="error" id="err" role="alert" hidden></p>
+<div id="out"></div>
+<p class="mini-foot"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const DAY=864e5,U=(y,m,d)=>Date.UTC(y,m-1,d),fmt=n=>Math.round(n).toLocaleString('en-US');
+const wd=t=>new Date(t).toLocaleDateString('en-US',{weekday:'long',timeZone:'UTC'});
+const ds=t=>new Date(t).toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'UTC'});
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const leap=y=>y%4==0&&y%100!=0||y%400==0;
+const dim=(y,m)=>new Date(Date.UTC(y,m,0)).getUTCDate();
+const ZS=[[1,20,'Aquarius ♒'],[2,19,'Pisces ♓'],[3,21,'Aries ♈'],[4,20,'Taurus ♉'],[5,21,'Gemini ♊'],[6,21,'Cancer ♋'],[7,23,'Leo ♌'],[8,23,'Virgo ♍'],[9,23,'Libra ♎'],[10,23,'Scorpio ♏'],[11,22,'Sagittarius ♐'],[12,22,'Capricorn ♑']];
+const CZ=['Rat 🐀','Ox 🐂','Tiger 🐅','Rabbit 🐇','Dragon 🐉','Snake 🐍','Horse 🐎','Goat 🐐','Monkey 🐒','Rooster 🐓','Dog 🐕','Pig 🐖'];
+const STONE=['Garnet','Amethyst','Aquamarine','Diamond','Emerald','Pearl or moonstone','Ruby','Peridot','Sapphire','Opal or tourmaline','Topaz or citrine','Turquoise or tanzanite'];
+const MOON=['New Moon 🌑','Waxing Crescent 🌒','First Quarter 🌓','Waxing Gibbous 🌔','Full Moon 🌕','Waning Gibbous 🌖','Last Quarter 🌗','Waning Crescent 🌘'];
+let timer;
+function rate(y,m,d,w,ph){
+  const F=[],add=(l,r,c)=>F.push([l,r,c]);
+  const s=String(d).padStart(2,'0')+String(m).padStart(2,'0')+y,ys=String(y);
+  const SP={'12-25':['Christmas Day',30,10],'12-24':['Christmas Eve',25,6],'1-1':['New Year’s Day',25,12],'12-26':['Day after Christmas',20,4],'7-4':['Independence Day (US)',22,10],'12-31':['New Year’s Eve',14,10],'1-2':['Day after New Year’s',10,0],'10-31':['Halloween',10,8],'2-14':['Valentine’s Day',4,12],'3-14':['Pi Day',4,10],'4-1':['April Fools’ Day',3,5],'3-20':['Equinox or solstice',2,6],'3-21':['Equinox or solstice',2,6],'6-20':['Equinox or solstice',2,6],'6-21':['Equinox or solstice',2,6],'9-22':['Equinox or solstice',2,6],'9-23':['Equinox or solstice',2,6],'12-21':['Equinox or solstice',2,6],'12-22':['Equinox or solstice',2,6]};
+  if(m===2&&d===29)add('Leap day, about 1 in 1,461 birthdays',60,15);
+  const sp=SP[m+'-'+d];if(sp)add(sp[0],sp[1],sp[2]);
+  const mp={8:0,9:0,7:2,10:2,12:3,11:3,1:4,3:4,4:4,5:4,6:4,2:6}[m];
+  if(mp>=4)add('Born in a quieter birth month',mp,0);
+  if(w===0)add('Sunday, the least common birth weekday',12,3);
+  else if(w===6)add('Saturday, an uncommon birth weekday',8,5);
+  else if(w===5)add('Friday birth',2,5);
+  else if(w===1)add('Monday birth',2,0);
+  if(d===13)add('Born on the 13th',3,0);
+  if(w===5&&d===13)add('Friday the 13th',12,6);
+  if(s===[...s].reverse().join(''))add('Palindrome date: DDMMYYYY reads the same backwards',25,20);
+  if(new Set(s).size<=2)add('Only two different digits in the date',15,12);
+  if(d===m)add('Day and month are the same number',8,8);
+  if(d===m&&d===y%100)add('Day, month and year all match',15,12);
+  if(ys===[...ys].reverse().join(''))add('Palindrome year',5,4);
+  if(y===2000)add('Born in the millennium year',4,8);
+  if([m,d].some(v=>v===7||v===8))add('Contains a lucky 7 or 8',0,4);
+  if(Math.abs(ph-14.77)<=1)add('Born near a full moon',0,10);
+  else if(ph<1||ph>28.5)add('Born near a new moon',0,4);
+  const r=Math.min(100,10+F.reduce((a,x)=>a+x[1],0)),c=Math.min(100,40+F.reduce((a,x)=>a+x[2],0));
+  const rt=r<25?'Very common':r<40?'Common':r<55?'Uncommon':r<70?'Rare':r<85?'Very rare':'Legendary';
+  const ct=c<50?'Easygoing':c<65?'Charming':c<80?'Special':'Outstanding';
+  return {r,c,rt,ct,F};
+}
+function isoWeek(t){const x=new Date(t),n=(x.getUTCDay()+6)%7;x.setUTCDate(x.getUTCDate()-n+3);const f=new Date(Date.UTC(x.getUTCFullYear(),0,4));return 1+Math.round(((x-f)/DAY-3+((f.getUTCDay()+6)%7))/7)}
+const row=(a,b,c)=>`<div class="row"><dt>${a}</dt><dd>${b}${c?`<small>${c}</small>`:''}</dd></div>`;
+function run(){
+  clearInterval(timer);
+  const v=$('#d').value,out=$('#out'),err=$('#err');
+  out.innerHTML='';err.hidden=true;
+  if(!v)return;
+  const [y,m,d]=v.split('-').map(Number),now=new Date(),ty=now.getFullYear(),tm=now.getMonth()+1,td=now.getDate();
+  const T=U(ty,tm,td),B=U(y,m,d);
+  if(B>T){err.textContent='That date is in the future. Enter a date of birth that has already happened.';err.hidden=false;return}
+  const [hh,mm]=($('#t').value||'00:00').split(':').map(Number);
+  const bMs=new Date(y,m-1,d,hh,mm).getTime();
+  let Y=ty-y,M=tm-m,D=td-d;
+  if(D<0){M--;D+=dim(tm===1?ty-1:ty,tm===1?12:tm-1)}
+  if(M<0){Y--;M+=12}
+  const days=(T-B)/DAY,dow=wd(B);
+  const bday=yr=>(m===2&&d===29&&!leap(yr))?U(yr,2,28):U(yr,m,d);
+  let ny=ty;if(bday(ny)<T)ny++;
+  const nb=bday(ny),until=(nb-T)/DAY;
+  let same=null;for(let yr=ny;yr<ny+25;yr++){if(wd(bday(yr))===dow){same=yr;break}}
+  let zs='Capricorn ♑';ZS.forEach(z=>{if(m*100+d>=z[0]*100+z[1])zs=z[2]});
+  const doy=(B-U(y,1,1))/DAY+1,yl=leap(y)?366:365;
+  const season=[3,4,5].includes(m)?'Spring':[6,7,8].includes(m)?'Summer':[9,10,11].includes(m)?'Autumn':'Winter';
+  const syn=29.530588853,ph=(((B+12*36e5)-Date.UTC(2000,0,6,18,14))/DAY%syn+syn)%syn;
+  const gen=y<=1945?'Silent Generation':y<=1964?'Baby Boomer':y<=1980?'Generation X':y<=1996?'Millennial':y<=2012?'Generation Z':'Generation Alpha';
+  const decade=Math.floor(y/10)*10+'s';
+  const sec=(Date.now()-bMs)/1000;
+  const R=rate(y,m,d,new Date(B).getUTCDay(),ph);
+  const meter=(v,t,l)=>`<div class="meter"><div class="mh"><b>${v}</b><span>/100</span><em>${t}</em></div><div class="bar"><i style="width:${v}%"></i></div><p>${l}</p></div>`;
+  const factors=R.F.length?R.F.map(([l,a,b])=>row(l,[a?'Rarity +'+a:'',b?'Charm +'+b:''].filter(Boolean).join(', '))).join(''):row('Nothing unusual','A very ordinary calendar date','Common dates are the norm, and that is fine.');
+  const first=new Date(Date.UTC(y,m-1,1)).getUTCDay(),n=dim(y,m);
+  let cells='';for(let i=0;i<first;i++)cells+='<span></span>';
+  for(let i=1;i<=n;i++)cells+=`<span class="${i===d?'on':''}">${i}</span>`;
+  const MS=[[1000,'days'],[5000,'days'],[10000,'days'],[15000,'days'],[20000,'days'],[25000,'days'],[30000,'days'],[1e9,'seconds'],[2e9,'seconds']];
+  const ms=MS.map(([k,u])=>{
+    let t;if(u==='days')t=B+k*DAY;else{const q=new Date(bMs+k*1000);t=Date.UTC(q.getFullYear(),q.getMonth(),q.getDate())}
+    const diff=Math.round((t-T)/DAY);
+    const when=diff<0?`${fmt(-diff)} days ago`:diff===0?'today':`in ${fmt(diff)} days`;
+    return `<div class="row ${diff<0?'past':''}"><dt>${u==='days'?fmt(k)+' days':(k/1e9)+' billion seconds'}</dt><dd>${ds(t)}<small>${when}</small></dd></div>`}).join('');
+  out.innerHTML=`
+  <div class="banner">You were born on a ${dow}.</div>
+  <div class="hero">
+    <div><div class="nums">
+      <div class="num"><b>${Y}</b><span>years</span></div>
+      <div class="num"><b>${M}</b><span>months</span></div>
+      <div class="num"><b>${D}</b><span>days</span></div></div>
+      <p class="note">${until===0?'Happy birthday! Today you turn '+(ny-y)+'.':`Your next birthday is in ${fmt(until)} day${until===1?'':'s'}.`}</p></div>
+    <div class="cal"><h3>${MONTHS[m-1]} ${y}</h3>
+      <div class="grid"><i>S</i><i>M</i><i>T</i><i>W</i><i>T</i><i>F</i><i>S</i>${cells}</div></div>
+  </div>
+  <section><h2>Birth date rating</h2>
+    <div class="rate">${meter(R.r,R.rt,'Rarity: how uncommon this date is')}${meter(R.c,R.ct,'Charm: how special the date looks')}</div>
+    <dl class="ledger" style="margin:0">${factors}</dl>
+    <p class="note">Just for fun. Rarity uses general birth patterns (fewer births on holidays, weekends and in some months, based on trends such as US birth data) plus calendar oddities. It is not an exact statistic.</p></section>
+  <section><h2>Time lived, counting live</h2>
+    <div class="clock">
+      <div><b id="c-s"></b><span>seconds</span></div>
+      <div><b id="c-m"></b><span>minutes</span></div>
+      <div><b id="c-h"></b><span>hours</span></div>
+      <div><b>${fmt(days)}</b><span>days</span></div>
+      <div><b>${fmt(Math.floor(days/7))}</b><span>weeks (${days%7} days extra)</span></div>
+      <div><b>${fmt(Y*12+M)}</b><span>months</span></div>
+    </div>
+    <p class="note">${$('#t').value?'Based on your birth time, in this device’s time zone.':'No birth time entered, so counts start at midnight on your birth date.'}</p></section>
+  <section><h2>Your birth day</h2><dl class="ledger" style="margin:0">
+    ${row('Weekday',dow,ds(B))}
+    ${row('Day of the year',`Day ${doy} of ${yl}`,`${yl-doy} days left that year`)}
+    ${row('ISO week number','Week '+isoWeek(B))}
+    ${row('Leap year?',leap(y)?'Yes':'No')}
+    ${row('Season (northern hemisphere)',season)}
+    ${row('Decade and generation',decade,gen)}
+    ${row('Moon phase at birth',MOON[Math.floor(ph/syn*8+.5)%8],`about ${ph.toFixed(1)} days into the lunar cycle`)}
+  </dl></section>
+  <section><h2>Signs and stones</h2><dl class="ledger" style="margin:0">
+    ${row('Zodiac sign',zs)}
+    ${row('Chinese zodiac year',CZ[((y-4)%12+12)%12],'Based on the calendar year. Births in January or early February may belong to the previous animal.')}
+    ${row('Birthstone',STONE[m-1])}
+  </dl></section>
+  <section><h2>Next birthday</h2><dl class="ledger" style="margin:0">
+    ${row('Date',ds(nb),until===0?'That is today':`In ${fmt(until)} days (${Math.floor(until/7)} weeks and ${until%7} days)`)}
+    ${row('You will turn',String(ny-y))}
+    ${row('Birthday on your birth weekday',same===null?'Not within 25 years':same===ny&&until===0?'Today':ds(bday(same)),`Next time your birthday falls on a ${dow}`)}
+    ${m===2&&d===29?row('Leap-day birthday','Celebrated on Feb 28 in common years'):''}
+  </dl></section>
+  <section><h2>Life in numbers</h2><dl class="ledger" style="margin:0">
+    ${row('Heartbeats so far','≈ '+fmt(days*1440*72),'Assuming an average of 72 beats per minute')}
+    ${row('Breaths taken','≈ '+fmt(days*1440*16),'Assuming about 16 breaths per minute')}
+    ${row('Time spent asleep','≈ '+(Y*8/24).toFixed(1)+' years','Assuming about 8 hours a night')}
+    ${row('Distance travelled around the Sun','≈ '+fmt(sec*29.78)+' km','Earth moves at about 29.78 km per second')}
+    ${row('Full moons since birth','≈ '+fmt(days/syn))}
+    ${row('Trips around the Sun',Y+' completed',M+' months and '+D+' days into the next one')}
+  </dl></section>
+  <section><h2>Milestones</h2><dl class="ledger ms" style="margin:0">${ms}</dl></section>`;
+  const f=n=>fmt(n);
+  const tick=()=>{const s=Math.floor((Date.now()-bMs)/1000);$('#c-s').textContent=f(s);$('#c-m').textContent=f(s/60);$('#c-h').textContent=f(s/3600)};
+  tick();timer=setInterval(tick,1000);
+}
+$('#d').addEventListener('change',run);$('#t').addEventListener('change',run);
+</script>
+<script src="site.js" defer data-privacy="privacy.html"></script>
+</body>
+</html>
