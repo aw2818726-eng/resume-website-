@@ -2,11 +2,11 @@
    Uses the same tokens as the main portfolio's dark "Analyst view". */
 :root{
   color-scheme:dark;
-  --bg:#14171A;--bg-alt:#191D20;--surface:#1D2226;--text:#E7E9EA;--text-soft:#9AA3AB;--text-faint:#8A939B;
-  --border:#2B3136;--border-strong:#3A424A;--accent:#E8A33D;--accent-soft:#2A2419;
-  --good:#4FAE8C;--good-soft:#17261F;--danger:#FF8A80;
+  --bg:#05080B;--bg-alt:#0A1014;--surface:#0E151B;--text:#E6F2F8;--text-soft:#9DB4C2;--text-faint:#8AA0AE;
+  --border:#1B2831;--border-strong:#2A3B47;--accent:#8FD8F0;--accent-soft:#0D1E27;
+  --good:#35F0A0;--good-soft:#0B2119;--danger:#FF8A80;
   --radius:10px;--radius-sm:6px;--ease:cubic-bezier(.4,0,.2,1);
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.35);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 28px rgba(0,0,0,.5);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
@@ -32,7 +32,7 @@ a{color:var(--accent)}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:var(--bg);border:1px solid transparent;padding:12px 22px;min-height:44px;border-radius:var(--radius-sm);font:600 14px 'Inter',sans-serif;cursor:pointer;transition:transform .2s var(--ease),filter .2s,box-shadow .2s}
-.btn:hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 6px 18px rgba(232,163,61,.22)}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 6px 18px rgba(143,216,240,.22)}
 .btn:active{transform:translateY(0)}
 .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 
@@ -110,8 +110,8 @@ input[aria-invalid=true]{border-color:var(--danger)}
 .pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:12px;padding:5px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border));margin:3px 4px 3px 0}
 
 /* SQL practice */
-pre{background:#101314;color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 18px;overflow-x:auto;font:12.5px/1.7 'IBM Plex Mono',monospace;margin:12px 0 0}
-.kw{color:var(--accent)}.fn{color:#7EC8E3}.cm{color:#7A8590;font-style:italic}
+pre{background:#070C10;color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 18px;overflow-x:auto;font:12.5px/1.7 'IBM Plex Mono',monospace;margin:12px 0 0}
+.kw{color:var(--accent)}.fn{color:#35F0A0}.cm{color:#7D93A1;font-style:italic}
 .check{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .check div{display:flex;align-items:center;gap:8px;padding:9px 12px;color:var(--text);background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px}
 
