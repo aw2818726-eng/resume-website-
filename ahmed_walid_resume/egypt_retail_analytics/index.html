@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Egypt E-commerce Sales Dashboard</title>
 <style>
-:root{color-scheme:light;--bg:#f6f6f3;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#7a7974;--line:#e3e2dc;
---s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--heat:42,120,214}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#121211;--surface:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--muted:#97968e;--line:#2c2c2a;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--heat:57,135,229}}
-:root[data-theme="dark"]{color-scheme:dark;--bg:#121211;--surface:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--muted:#97968e;--line:#2c2c2a;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--heat:57,135,229}
+:root{color-scheme:light;--bg:#EEF6FA;--surface:#FFFFFF;--ink:#0A1620;--ink2:#44596A;--muted:#5F7482;--line:#CFE0EA;
+--s1:#0F5F7A;--s2:#0B8A5C;--s3:#2E86B8;--s4:#5B7A8C;--heat:15,95,122;--heat-ink:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#05080B;--surface:#0E151B;--ink:#E6F2F8;--ink2:#9DB4C2;--muted:#8AA0AE;--line:#1B2831;--s1:#8FD8F0;--s2:#35F0A0;--s3:#4C9FD6;--s4:#B6C4D0;--heat:143,216,240;--heat-ink:#05080B}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#05080B;--surface:#0E151B;--ink:#E6F2F8;--ink2:#9DB4C2;--muted:#8AA0AE;--line:#1B2831;--s1:#8FD8F0;--s2:#35F0A0;--s3:#4C9FD6;--s4:#B6C4D0;--heat:143,216,240;--heat-ink:#05080B}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:1120px;margin:0 auto;padding:24px 16px 48px}
@@ -185,7 +185,7 @@ function renderCohort(){
       const v = c.retention[i];
       if(v===undefined || v===null) return "<td></td>";
       const a = Math.min(1, v/30);
-      return `<td style="background:rgba(${rgb},${(0.08+a*0.8).toFixed(2)});color:${a>.55?'#fff':'inherit'}" title="${v}%">${Math.round(v)}</td>`;
+      return `<td style="background:rgba(${rgb},${(0.08+a*0.8).toFixed(2)});color:${a>.55?'var(--heat-ink)':'inherit'}" title="${v}%">${Math.round(v)}</td>`;
     }).join("") + "</tr>";
   });
   el("cohort").innerHTML = h;
