@@ -4,25 +4,25 @@
 @property --fx-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
 
 :root{
-  --fx-a:#5CC0F0;   /* gold amber */
-  --fx-b:#329DD2;   /* orange */
-  --fx-c:#FF4C2B;   /* flame */
-  --fx-d:#FF7043;   /* hot rose */
+  --fx-a:#FFC24D;   /* gold amber */
+  --fx-b:#FF8A1F;   /* orange */
+  --fx-c:#FF4D2E;   /* flame */
+  --fx-d:#FF3D81;   /* hot rose */
   --fx-glow:.9;
-  --fx-on:#080F1B;  /* text on a bright gradient */
-  --fx-grad:linear-gradient(100deg,var(--fx-a),var(--fx-b) 44%,var(--fx-c) 56%,var(--fx-d));
+  --fx-on:#1A1206;  /* text on a bright gradient */
+  --fx-grad:linear-gradient(100deg,var(--fx-a),var(--fx-b) 34%,var(--fx-c) 68%,var(--fx-d));
 }
 /* light themes: deeper tones so text and lines keep contrast */
 [data-theme="professional"],[data-theme="light"],[data-theme="clean"]{
-  --fx-a:#0E5F8C;--fx-b:#1673A3;--fx-c:#C93A1C;--fx-d:#B33418;--fx-glow:.5;--fx-on:#fff;
+  --fx-a:#B26A00;--fx-b:#C85000;--fx-c:#C0361B;--fx-d:#B8205F;--fx-glow:.5;--fx-on:#fff;
 }
 @media (prefers-color-scheme:light){
-  :root:not([data-theme]){--fx-a:#0E5F8C;--fx-b:#1673A3;--fx-c:#C93A1C;--fx-d:#B33418;--fx-glow:.5;--fx-on:#fff}
+  :root:not([data-theme]){--fx-a:#B26A00;--fx-b:#C85000;--fx-c:#C0361B;--fx-d:#B8205F;--fx-glow:.5;--fx-on:#fff}
 }
-[data-theme="dark"],[data-theme="analyst"]{--fx-a:#5CC0F0;--fx-b:#329DD2;--fx-c:#FF4C2B;--fx-d:#FF7043;--fx-glow:1;--fx-on:#080F1B}
+[data-theme="dark"],[data-theme="analyst"]{--fx-a:#FFC24D;--fx-b:#FF8A1F;--fx-c:#FF4D2E;--fx-d:#FF3D81;--fx-glow:1;--fx-on:#1A1206}
 
 /* recompute the gradient on every element that sets its own colors */
-:root,[data-theme]{--fx-grad:linear-gradient(100deg,var(--fx-a),var(--fx-b) 44%,var(--fx-c) 56%,var(--fx-d))}
+:root,[data-theme]{--fx-grad:linear-gradient(100deg,var(--fx-a),var(--fx-b) 34%,var(--fx-c) 68%,var(--fx-d))}
 
 ::selection{background:color-mix(in srgb,var(--fx-c) 60%,transparent);color:#fff}
 html{scrollbar-color:var(--fx-c) transparent}
@@ -47,8 +47,8 @@ body::before{
 @supports (animation-timeline:scroll()){
   html::after{
     content:"";position:fixed;top:0;left:0;right:0;height:3px;z-index:200;pointer-events:none;
-    background:linear-gradient(100deg,#5CC0F0,#329DD2 34%,#FF4C2B 68%,#FF7043);transform-origin:0 50%;transform:scaleX(0);will-change:transform;
-    box-shadow:0 0 14px rgba(255,76,43,.6);
+    background:linear-gradient(100deg,#FFC24D,#FF8A1F 34%,#FF4D2E 68%,#FF3D81);transform-origin:0 50%;transform:scaleX(0);will-change:transform;
+    box-shadow:0 0 14px rgba(255,138,31,.6);
     animation:fx-progress linear both;animation-timeline:scroll(root);
   }
   @keyframes fx-progress{to{transform:scaleX(1)}}
@@ -144,7 +144,7 @@ nav.links a:hover{color:var(--fx-b);border-color:var(--fx-c)}
 a:focus-visible,button:focus-visible{outline-color:var(--fx-c)}
 
 /* Ain Shams demo */
-.hero:has(.hero-content){--fx-a:#5CC0F0;--fx-b:#329DD2;--fx-c:#FF6A45;--fx-d:#FF7A55;--fx-grad:linear-gradient(100deg,#5CC0F0,#329DD2 44%,#FF6A45 56%,#FF7A55);background:linear-gradient(135deg,#080F1B 0%,#0C1A2E 42%,#0F3A5A 70%,#7A2A1C 100%)}
+.hero:has(.hero-content){--fx-a:#FFC24D;--fx-b:#FF8A1F;--fx-c:#FF6A3D;--fx-d:#FF5C93;--fx-grad:linear-gradient(100deg,#FFC24D,#FF8A1F 34%,#FF6A3D 68%,#FF5C93);background:linear-gradient(135deg,#0e2542 0%,#1a3c6e 42%,#7a2a10 78%,#c4520c 100%)}
 .header{border-bottom:2px solid transparent;border-image:linear-gradient(90deg,var(--fx-a),var(--fx-b),var(--fx-c),var(--fx-d)) 1}
 .hero-content h1 .highlight,.hero-content h1 span.highlight{background:var(--fx-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .faculty-card:hover{transform:translateY(-4px)}
@@ -186,7 +186,7 @@ img{content-visibility:auto}
   position:fixed;left:14px;bottom:14px;z-index:60;display:inline-flex;align-items:center;gap:8px;
   padding:8px 14px 8px 12px;border-radius:999px;text-decoration:none;
   font:600 12px/1 Inter,system-ui,-apple-system,sans-serif;letter-spacing:.02em;color:#E8EEF2;
-  background:rgba(8,15,27,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  background:rgba(8,10,12,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
   border:1px solid color-mix(in srgb,var(--fx-c) 55%,transparent);
   box-shadow:0 8px 26px -10px color-mix(in srgb,var(--fx-c) 70%,transparent);
   transition:transform .25s var(--ease,ease),box-shadow .3s,border-color .3s;

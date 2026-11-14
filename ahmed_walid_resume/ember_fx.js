@@ -27,7 +27,7 @@
   a.className = "fx-switch";
   a.href = to + location.search;
   a.setAttribute("aria-label", inAlt ? "Switch to the Amber version of this page" : "Switch to the Aurora version of this page");
-  a.style.setProperty("--other", inAlt ? "#FF7043" : "#5CC0F0");
+  a.style.setProperty("--other", inAlt ? "#FFB02E" : "#35F0A0");
   a.innerHTML = "<i></i>" + (inAlt ? "Amber version" : "Aurora version");
   document.addEventListener("DOMContentLoaded", function () { document.body.appendChild(a); });
   if (document.readyState !== "loading") document.body.appendChild(a);

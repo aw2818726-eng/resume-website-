@@ -2,9 +2,9 @@
    Uses the same tokens as the main portfolio's dark "Analyst view". */
 :root{
   color-scheme:dark;
-  --bg:#080F1B;--bg-alt:#0C1626;--surface:#101B2D;--text:#E8EEF6;--text-soft:#9FB0C6;--text-faint:#92A3BA;
-  --border:#1D2B42;--border-strong:#2A3B57;--accent:#FF4C2B;--accent-soft:#261419;
-  --good:#329DD2;--good-soft:#10243A;--danger:#FF8A80;
+  --bg:#14171A;--bg-alt:#191D20;--surface:#1D2226;--text:#E7E9EA;--text-soft:#9AA3AB;--text-faint:#8A939B;
+  --border:#2B3136;--border-strong:#3A424A;--accent:#E8A33D;--accent-soft:#2A2419;
+  --good:#4FAE8C;--good-soft:#17261F;--danger:#FF8A80;
   --radius:10px;--radius-sm:6px;--ease:cubic-bezier(.4,0,.2,1);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.35);
 }
@@ -32,7 +32,7 @@ a{color:var(--accent)}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:var(--bg);border:1px solid transparent;padding:12px 22px;min-height:44px;border-radius:var(--radius-sm);font:600 14px 'Inter',sans-serif;cursor:pointer;transition:transform .2s var(--ease),filter .2s,box-shadow .2s}
-.btn:hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 6px 18px rgba(255,76,43,.22)}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 6px 18px rgba(232,163,61,.22)}
 .btn:active{transform:translateY(0)}
 .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 
