@@ -163,7 +163,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 <script>
 const body=document.body;const themeSwitch=document.getElementById('themeSwitch');const switchLabel=document.getElementById('switchLabel');const footStatus=document.getElementById('footStatus');
 function setTheme(t){body.setAttribute('data-theme',t);const l=t==='analyst'?'Analyst view':'Recruiter view';switchLabel.textContent=l;footStatus.textContent=l;}
-themeSwitch.addEventListener('click',()=>{const c=body.getAttribute('data-theme');setTheme(c==='professional'?'analyst':'professional');});
+themeSwitch.addEventListener('click',()=>{const c=body.getAttribute('data-theme');const n=c==='professional'?'analyst':'professional';if(document.startViewTransition&&!matchMedia('(prefers-reduced-motion:reduce)').matches){document.startViewTransition(()=>setTheme(n));}else{setTheme(n);}});
 const hamburger=document.getElementById('hamburger');const navLinks=document.getElementById('navLinks');
 hamburger.addEventListener('click',()=>{const o=navLinks.classList.toggle('open');hamburger.setAttribute('aria-expanded',o?'true':'false');});
 navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navLinks.classList.remove('open');hamburger.setAttribute('aria-expanded','false');}));
