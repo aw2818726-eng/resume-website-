@@ -12,9 +12,9 @@
       ]
     },
     {
-      "source": "/(favicon.svg|apple-touch-icon.png|og-image.png)",
+      "source": "/(favicon.svg|apple-touch-icon.png|og-image.png|favicon_amber.svg|apple_touch_icon_amber.png|og_image_amber.png)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
       ]
     }
   ]
