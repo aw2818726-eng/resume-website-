@@ -1,5 +1,5 @@
-:root{--bg:#14171A;--surface:#1D2226;--text:#E7E9EA;--text-soft:#A5ADB5;--border:#2B3136;--accent:#E8A33D;--link:#E8A33D}
-@media (prefers-color-scheme:light){:root{--bg:#F6F7F9;--surface:#FFFFFF;--text:#1A2332;--text-soft:#4A5361;--border:#E1E5EA;--accent:#2C5F6E;--link:#2C5F6E}}
+:root{--bg:#080F1B;--surface:#101B2D;--text:#E8EEF6;--text-soft:#A9B8CC;--border:#1D2B42;--accent:#FF4C2B;--link:#329DD2}
+@media (prefers-color-scheme:light){:root{--bg:#F3F7FB;--surface:#FFFFFF;--text:#080F1B;--text-soft:#43546C;--border:#D5E0EC;--accent:#1673A3;--link:#1673A3}}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}

@@ -30,12 +30,12 @@
     css.id = 'awNoticeStyle';
     css.textContent =
       '#awNotice{position:fixed;left:12px;right:12px;bottom:12px;margin:0 auto;max-width:680px;z-index:1000;' +
-      'background:#1D2226;color:#E7E9EA;border:1px solid #3A424A;border-radius:12px;padding:14px 16px;' +
+      'background:#101B2D;color:#E8EEF6;border:1px solid #2A3B57;border-radius:12px;padding:14px 16px;' +
       'display:flex;gap:14px;align-items:center;justify-content:space-between;box-shadow:0 8px 28px rgba(0,0,0,.45);' +
       'font:14px/1.5 Inter,-apple-system,"Segoe UI",Arial,sans-serif}' +
       '#awNotice p{margin:0}' +
-      '#awNotice a{color:#E8A33D;text-decoration:underline;display:inline-flex;align-items:center;min-height:44px;padding:0 4px}' +
-      '#awNotice button{flex:none;background:#E8A33D;color:#14171A;border:0;border-radius:8px;min-height:44px;min-width:96px;' +
+      '#awNotice a{color:#FF4C2B;text-decoration:underline;display:inline-flex;align-items:center;min-height:44px;padding:0 4px}' +
+      '#awNotice button{flex:none;background:#FF4C2B;color:#080F1B;border:0;border-radius:8px;min-height:44px;min-width:96px;' +
       'padding:0 18px;font:600 14px Inter,-apple-system,"Segoe UI",Arial,sans-serif;cursor:pointer}' +
       '#awNotice a:focus-visible,#awNotice button:focus-visible{outline:2px solid #fff;outline-offset:3px}' +
       '@media (max-width:560px){#awNotice{flex-direction:column;align-items:stretch;gap:10px}#awNotice button{width:100%}}';
