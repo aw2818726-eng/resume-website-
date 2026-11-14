@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta name="robots" content="noindex"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Data Cleaning Console — Ahmed Walid Mohamed</title>
+<meta name="description" content="Free in-browser tool that scans a spreadsheet for duplicate rows, empty rows and columns, stray whitespace and mixed data types, then lets you download a cleaned .xlsx.">
+<link rel="canonical" href="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/data-cleaning-console.html">
+<meta name="theme-color" content="#05080B">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ahmed Walid Mohamed">
+<meta property="og:title" content="Data Cleaning Console — Ahmed Walid Mohamed">
+<meta property="og:description" content="Free in-browser tool that scans a spreadsheet for duplicate rows, empty rows and columns, stray whitespace and mixed data types, then lets you download a cleaned .xlsx.">
+<meta property="og:url" content="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/data-cleaning-console.html">
+<meta property="og:image" content="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ahmed Walid Mohamed — Resume and portfolio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Data Cleaning Console — Ahmed Walid Mohamed">
+<meta name="twitter:description" content="Free in-browser tool that scans a spreadsheet for duplicate rows, empty rows and columns, stray whitespace and mixed data types, then lets you download a cleaned .xlsx.">
+<meta name="twitter:image" content="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/og-image.png">
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tool_pages.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="stylesheet" href="aurora_fx.css"><script src="aurora_fx.js" defer></script>
+</head><body><a class="skip-link" href="#main">Skip to content</a><main class="wrap" id="main"><a href="index.html">← Back to portfolio</a>
+<div class="eyebrow">Live demo</div>
+<h1>Data Cleaning Console</h1>
+<p class="lede">Upload a spreadsheet and see exactly what's wrong with it. Pick the fixes you want, check the preview, then download a cleaned .xlsx.</p>
+
+<div class="panel">
+<div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Choose a spreadsheet file, or drop one here">
+<svg class="dz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 17v-6"/><path d="m9.5 13.5 2.5-2.5 2.5 2.5"/></svg>
+<span class="dz-title">Drop a spreadsheet here, or click to browse</span>
+<span class="dz-hint"><b>.xlsx</b> <b>.xls</b> <b>.csv</b> · up to 10 MB · first row is the header</span>
+<input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none" tabindex="-1">
+</div>
+<p class="privacy-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Your file is processed in your browser and is never uploaded.</p>
+<p id="fileError" class="err" role="alert" style="display:none"></p>
+<div id="fileInfo" aria-live="polite"></div>
+</div>
+
+<div id="diagArea" style="display:none;">
+<div class="panel"><div class="panel-head"><div><h2>Diagnostics</h2><p class="panel-sub">Tick the fixes to apply. Categories with nothing found are marked clean.</p></div></div><div id="diagList"></div></div>
+<div class="panel"><div class="panel-head"><div><h2>Preview</h2><p class="panel-sub">Highlighted cells are the ones the scan flagged.</p></div></div>
+<p class="legend"><span><i></i>Flagged cell or row</span></p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Data preview"><table id="previewTable"></table></div><p class="tbl-note" id="tblNote"></p></div>
+<div class="panel action-bar"><div id="summaryText" aria-live="polite"></div><button class="btn" id="downloadBtn" type="button">Clean &amp; Download .xlsx</button></div>
+</div>
+
+<p class="mini-foot"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p></main>
+<script>
+let rawRows=[];let workbookName='cleaned-data';
+const diagKeys=['dupes','emptyRC','whitespace','mixedTypes','doubleSpace'];
+const diagMeta={
+dupes:{name:'Duplicate rows',desc:'Rows identical to an earlier row. The first copy is kept.'},
+emptyRC:{name:'Empty rows and columns',desc:'Rows or columns with no values at all.'},
+whitespace:{name:'Stray whitespace',desc:'Leading or trailing spaces around text.'},
+mixedTypes:{name:'Mixed data types',desc:'Text sitting in columns that are mostly numbers.'},
+doubleSpace:{name:'Double spacing',desc:'Two or more spaces in a row inside text.'}};
+let diagResults={};
+let toggles={dupes:true,emptyRC:true,whitespace:true,mixedTypes:true,doubleSpace:true};
+const dropzone=document.getElementById('dropzone');const fileInput=document.getElementById('fileInput');
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const MAX_BYTES=10*1024*1024;const errEl=document.getElementById('fileError');
+function showError(msg){errEl.textContent=msg;errEl.style.display='block';document.getElementById('diagArea').style.display='none';document.getElementById('fileInfo').style.display='none';rawRows=[];}
+function clearError(){errEl.textContent='';errEl.style.display='none';}
+dropzone.addEventListener('click',()=>fileInput.click());
+dropzone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fileInput.click();}});
+['dragenter','dragover'].forEach(t=>dropzone.addEventListener(t,e=>{e.preventDefault();dropzone.classList.add('drag');}));
+['dragleave','drop'].forEach(t=>dropzone.addEventListener(t,e=>{e.preventDefault();dropzone.classList.remove('drag');}));
+dropzone.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];if(f)handleFile(f);});
+fileInput.addEventListener('change',e=>{if(e.target.files.length)handleFile(e.target.files[0]);fileInput.value='';});
+function handleFile(file){
+clearError();
+if(!/\.(xlsx|xls|csv)$/i.test(file.name)){showError('That file type is not supported. Please choose a .xlsx, .xls or .csv file.');return;}
+if(file.size===0){showError('That file is empty.');return;}
+if(file.size>MAX_BYTES){showError('That file is too large ('+(file.size/1048576).toFixed(1)+' MB). Please choose a file under 10 MB.');return;}
+if(typeof XLSX==='undefined'){showError('The spreadsheet library could not be loaded. Check your connection and reload the page.');return;}
+workbookName=file.name.replace(/\.[^.]+$/,'')+'-cleaned';
+const reader=new FileReader();
+reader.onerror=()=>showError('The file could not be read. Please try again.');
+reader.onload=(e)=>{try{const data=new Uint8Array(e.target.result);const wb=XLSX.read(data,{type:'array'});if(!wb.SheetNames.length)throw new Error('empty');const sheet=wb.Sheets[wb.SheetNames[0]];const rows=XLSX.utils.sheet_to_json(sheet,{header:1,defval:''});if(rows.length<2){showError('No data rows were found. The first row is treated as the header, so the file needs at least one more row.');return;}rawRows=rows;const info=document.getElementById('fileInfo');info.style.display='flex';info.innerHTML='<span class="chip file">'+esc(file.name)+'</span><span class="chip"><b>'+(rawRows.length-1).toLocaleString()+'</b> data rows</span><span class="chip"><b>'+(rawRows[0]||[]).length+'</b> columns</span>';runDiagnostics();}catch(err){showError('This file could not be read as a spreadsheet. It may be damaged or password-protected.');}};
+reader.readAsArrayBuffer(file);}
+function isEmptyCell(v){return v===null||v===undefined||String(v).trim()==='';}
+function isNumericLike(v){if(typeof v==='number')return true;if(v===''||v===null||v===undefined)return true;return !isNaN(parseFloat(v))&&isFinite(v);}
+function runDiagnostics(){const header=rawRows[0]||[];const body=rawRows.slice(1);const colCount=header.length;
+const seen=new Map();const dupeRowIdx=new Set();body.forEach((row,i)=>{const key=JSON.stringify(row);if(seen.has(key))dupeRowIdx.add(i);else seen.set(key,i);});
+const emptyRowIdx=new Set();body.forEach((row,i)=>{if(row.every(isEmptyCell))emptyRowIdx.add(i);});
+const emptyColIdx=new Set();for(let c=0;c<colCount;c++){if(body.every(row=>isEmptyCell(row[c])))emptyColIdx.add(c);}
+const wsCells=[];const dsCells=[];body.forEach((row,i)=>row.forEach((v,c)=>{if(typeof v==='string'){if(v!==v.trim()&&v.trim()!=='')wsCells.push([i,c]);if(/ {2,}/.test(v.trim()))dsCells.push([i,c]);}}));
+const mixedCells=[];for(let c=0;c<colCount;c++){const vals=body.map(r=>r[c]).filter(v=>!isEmptyCell(v));if(!vals.length)continue;const numericCount=vals.filter(isNumericLike).length;if(numericCount/vals.length>=0.7&&numericCount<vals.length){body.forEach((row,i)=>{if(!isEmptyCell(row[c])&&!isNumericLike(row[c]))mixedCells.push([i,c]);});}}
+diagResults={dupes:{count:dupeRowIdx.size,rows:dupeRowIdx},emptyRC:{count:emptyRowIdx.size+emptyColIdx.size,rows:emptyRowIdx,cols:emptyColIdx},whitespace:{count:wsCells.length,cells:wsCells},mixedTypes:{count:mixedCells.length,cells:mixedCells},doubleSpace:{count:dsCells.length,cells:dsCells}};
+renderDiagList();renderPreview(header,body);document.getElementById('diagArea').style.display='block';updateSummary();}
+function renderDiagList(){const list=document.getElementById('diagList');list.innerHTML='';
+diagKeys.forEach(key=>{const r=diagResults[key];const meta=diagMeta[key];const clean=!r.count;
+const label=document.createElement('label');label.className='diag-item'+(clean?' is-clean':'');
+label.innerHTML='<input type="checkbox" data-key="'+key+'" '+(toggles[key]&&!clean?'checked':'')+' '+(clean?'disabled':'')+'><span class="diag-text"><span class="diag-name">'+meta.name+'</span><span class="diag-desc">'+meta.desc+'</span></span><span class="badge '+(clean?'ok':'warn')+'">'+(clean?'clean':r.count+' found')+'</span>';
+list.appendChild(label);});
+list.querySelectorAll('input[type=checkbox]').forEach(cb=>{cb.addEventListener('change',()=>{toggles[cb.dataset.key]=cb.checked;updateSummary();});});}
+function renderPreview(header,body){const table=document.getElementById('previewTable');const flagSet=new Set();
+['whitespace','mixedTypes','doubleSpace'].forEach(k=>(diagResults[k].cells||[]).forEach(([r,c])=>flagSet.add(r+':'+c)));
+const emptyCols=diagResults.emptyRC.cols||new Set();const rowsToShow=body.slice(0,12);
+let html='<thead><tr>'+header.map((h,c)=>'<th class="'+(emptyCols.has(c)?'flag':'')+'">'+esc(h)+'</th>').join('')+'</tr></thead><tbody>';
+rowsToShow.forEach((row,i)=>{const isDupe=diagResults.dupes.rows.has(i);const isEmptyRow=diagResults.emptyRC.rows.has(i);
+html+='<tr>'+header.map((_,c)=>{const flagged=flagSet.has(i+':'+c)||isDupe||isEmptyRow||emptyCols.has(c);return '<td class="'+(flagged?'flag':'')+'">'+esc(row[c])+'</td>';}).join('')+'</tr>';});
+table.innerHTML=html+'</tbody>';
+document.getElementById('tblNote').textContent=body.length>rowsToShow.length?'Showing the first '+rowsToShow.length+' of '+body.length.toLocaleString()+' data rows. The cleaned file includes every row.':'Showing all '+body.length+' data rows.';}
+function updateSummary(){const activeFixes=diagKeys.filter(k=>toggles[k]&&diagResults[k].count);const el=document.getElementById('summaryText');
+if(activeFixes.length){el.innerHTML='<b>'+activeFixes.length+'</b> fix'+(activeFixes.length===1?'':'es')+' selected<span class="action-sub">Downloads a new file. Your original is untouched.</span>';}
+else{el.innerHTML='No fixes selected<span class="action-sub">The download will match your original data.</span>';}}
+document.getElementById('downloadBtn').addEventListener('click',()=>{if(!rawRows.length||typeof XLSX==='undefined')return;let header=rawRows[0].slice();let body=rawRows.slice(1).map(r=>r.slice());
+if(toggles.whitespace)body.forEach(row=>row.forEach((v,c)=>{if(typeof v==='string')row[c]=v.trim();}));
+if(toggles.doubleSpace)body.forEach(row=>row.forEach((v,c)=>{if(typeof v==='string')row[c]=v.replace(/ {2,}/g,' ').trim();}));
+if(toggles.dupes){const seen=new Set();const out=[];body.forEach(row=>{const key=JSON.stringify(row);if(!seen.has(key)){seen.add(key);out.push(row);}});body=out;}
+if(toggles.emptyRC){body=body.filter(row=>!row.every(isEmptyCell));const keepCols=[];for(let c=0;c<header.length;c++){if(!body.every(row=>isEmptyCell(row[c])))keepCols.push(c);}header=keepCols.map(c=>header[c]);body=body.map(row=>keepCols.map(c=>row[c]));}
+const ws=XLSX.utils.aoa_to_sheet([header,...body]);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Cleaned');XLSX.writeFile(wb,workbookName+'.xlsx');});
+</script><script src="site.js" defer data-privacy="privacy.html"></script></body></html>

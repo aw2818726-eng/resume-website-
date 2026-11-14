@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SQL &amp; Data Cleaning Practice — Ahmed Walid Mohamed</title>
 <meta name="description" content="BigQuery SQL practice: aggregation, CTEs and window functions on a cars dataset, plus a structured data-cleaning checklist.">
 <link rel="canonical" href="https://ahmed-walid-resume-v2-ahmed-waleed.vercel.app/bigquery-sql-practice.html">
-<meta name="theme-color" content="#05080B">
+<meta name="theme-color" content="#14171A">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="tool_pages.css"><link rel="stylesheet" href="aurora_fx.css"><script src="aurora_fx.js" defer></script>
+<link rel="stylesheet" href="tool_pages.css"><link rel="stylesheet" href="ember_fx.css"><script src="ember_fx.js" defer></script>
 </head><body><a class="skip-link" href="#main">Skip to content</a><main class="wrap" id="main"><a href="index.html">← Back to portfolio</a><h1>SQL &amp; Data Cleaning Practice — BigQuery</h1><p class="lede">Practice against a real dataset: querying, aggregation, joins, subqueries/CTEs, and window functions, plus a structured cleaning checklist.</p><p><b>Project:</b> my-first-pro-504117.cars.cars</p><div class="panel"><h2>Aggregation</h2><pre tabindex="0" role="region" aria-label="Aggregation query"><span class="kw">SELECT</span> manufacturer, <span class="fn">AVG</span>(price) <span class="kw">AS</span> avg_price
 <span class="kw">FROM</span> `my-first-pro-504117.cars.cars`
 <span class="kw">GROUP BY</span> manufacturer <span class="kw">ORDER BY</span> avg_price <span class="kw">DESC</span>;</pre></div><div class="panel"><h2>CTE</h2><pre tabindex="0" role="region" aria-label="CTE query"><span class="kw">WITH</span> mfr_avg <span class="kw">AS</span> (

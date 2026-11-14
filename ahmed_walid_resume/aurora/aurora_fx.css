@@ -1,0 +1,196 @@
+/* Aurora FX: shared flashy layer (black + ice + aurora green, with violet and pink).
+   Loaded AFTER each page's own styles so these rules win. Safe to remove: pages still work. */
+
+@property --fx-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+
+:root{
+  --fx-a:#35F0A0;   /* aurora green */
+  --fx-b:#8FD8F0;   /* ice */
+  --fx-c:#9B7BFF;   /* aurora violet */
+  --fx-d:#FF4DC4;   /* aurora pink */
+  --fx-glow:.9;
+  --fx-on:#05080B;  /* text on a bright gradient */
+  --fx-grad:linear-gradient(100deg,var(--fx-a),var(--fx-b) 34%,var(--fx-c) 68%,var(--fx-d));
+}
+/* light themes: deeper tones so text and lines keep contrast */
+[data-theme="professional"],[data-theme="light"],[data-theme="clean"]{
+  --fx-a:#0B8A5C;--fx-b:#2E86B8;--fx-c:#6B4BE0;--fx-d:#C2278F;--fx-glow:.5;--fx-on:#fff;
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme]){--fx-a:#0B8A5C;--fx-b:#2E86B8;--fx-c:#6B4BE0;--fx-d:#C2278F;--fx-glow:.5;--fx-on:#fff}
+}
+[data-theme="dark"],[data-theme="analyst"]{--fx-a:#35F0A0;--fx-b:#8FD8F0;--fx-c:#9B7BFF;--fx-d:#FF4DC4;--fx-glow:.9;--fx-on:#05080B}
+
+/* recompute the gradient on every element that sets its own colors */
+:root,[data-theme]{--fx-grad:linear-gradient(100deg,var(--fx-a),var(--fx-b) 34%,var(--fx-c) 68%,var(--fx-d))}
+
+::selection{background:color-mix(in srgb,var(--fx-c) 60%,transparent);color:#fff}
+html{scrollbar-color:var(--fx-c) transparent}
+
+/* ---------- animated aurora backdrop ---------- */
+body::before{
+  content:"";position:fixed;inset:-15% -10%;z-index:-1;pointer-events:none;opacity:var(--fx-glow);
+  background:
+    radial-gradient(38% 34% at 14% 8%,color-mix(in srgb,var(--fx-a) 34%,transparent),transparent 72%),
+    radial-gradient(34% 38% at 88% 4%,color-mix(in srgb,var(--fx-c) 38%,transparent),transparent 72%),
+    radial-gradient(38% 36% at 76% 96%,color-mix(in srgb,var(--fx-d) 24%,transparent),transparent 72%),
+    radial-gradient(34% 34% at 4% 92%,color-mix(in srgb,var(--fx-b) 28%,transparent),transparent 72%);
+  animation:fx-drift 40s ease-in-out infinite alternate;will-change:transform;contain:strict;
+}
+@keyframes fx-drift{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(2.5%,-2%,0) scale(1.06)}
+  100%{transform:translate3d(-2.5%,2.5%,0) scale(1.03)}
+}
+
+/* ---------- scroll progress ribbon (browsers with scroll-driven animations) ---------- */
+@supports (animation-timeline:scroll()){
+  html::after{
+    content:"";position:fixed;top:0;left:0;right:0;height:3px;z-index:200;pointer-events:none;
+    background:linear-gradient(100deg,#35F0A0,#8FD8F0 34%,#9B7BFF 68%,#FF4DC4);transform-origin:0 50%;transform:scaleX(0);will-change:transform;
+    box-shadow:0 0 14px rgba(53,240,160,.6);
+    animation:fx-progress linear both;animation-timeline:scroll(root);
+  }
+  @keyframes fx-progress{to{transform:scaleX(1)}}
+}
+
+/* the old hero glow is replaced by the animated backdrop (it left a visible edge) */
+[data-theme="analyst"] #hero{background:none}
+
+/* ---------- gradient headline text ---------- */
+h1.name,.sec-title,.fx-text,
+.wrap>h1,main>h1,header h1,.hero>h1,.tile .v,.stat-box .num,.num b,.kpis b,.stat-number,.hero-stat .number{
+  background:var(--fx-grad);background-size:150% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+@keyframes fx-shift{from{background-position:0% 50%}to{background-position:100% 50%}}
+
+/* ---------- glow + gradient border + pointer spotlight on cards ---------- */
+.card,.id-card,.stat-box,.edu-card,.proj-featured,.panel,.tile,.kpis div,.cal,.meter,.faculty-card,.stat-item{
+  position:relative;transition:transform .25s var(--ease,ease),box-shadow .3s,border-color .3s;
+}
+.card::before,.id-card::before,.stat-box::before,.edu-card::before,.proj-featured::before,.panel::before,.tile::before,.kpis div::before,.cal::before,.meter::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:var(--fx-grad);opacity:0;transition:opacity .3s;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+}
+.card::after,.id-card::after,.stat-box::after,.edu-card::after,.proj-featured::after,.panel::after,.tile::after,.kpis div::after,.cal::after,.meter::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(280px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--fx-b) 16%,transparent),transparent 65%);
+}
+.card:hover::before,.id-card:hover::before,.stat-box:hover::before,.edu-card:hover::before,.proj-featured:hover::before,.panel:hover::before,.tile:hover::before,.kpis div:hover::before,.cal:hover::before,.meter:hover::before,
+.card:hover::after,.id-card:hover::after,.stat-box:hover::after,.edu-card:hover::after,.proj-featured:hover::after,.panel:hover::after,.tile:hover::after,.kpis div:hover::after,.cal:hover::after,.meter:hover::after{opacity:1}
+.card:hover,.stat-box:hover,.edu-card:hover,.proj-featured:hover,.panel:hover,.tile:hover,.kpis div:hover,.cal:hover,.meter:hover,.faculty-card:hover{
+  box-shadow:0 18px 44px -18px color-mix(in srgb,var(--fx-c) 60%,transparent),0 0 36px -14px color-mix(in srgb,var(--fx-a) 60%,transparent);
+}
+.stat-box:hover,.tile:hover,.kpis div:hover{transform:translateY(-2px)}
+
+/* hero ID card: always-on spinning aurora border */
+.id-card{box-shadow:0 0 50px -16px color-mix(in srgb,var(--fx-c) 55%,transparent),0 0 36px -18px color-mix(in srgb,var(--fx-a) 55%,transparent)}
+.id-card::before{
+  opacity:1;padding:1.5px;
+  background:conic-gradient(from var(--fx-angle),var(--fx-a),var(--fx-b),var(--fx-c),var(--fx-d),var(--fx-a));
+  animation:fx-spin 12s linear infinite;
+}
+@keyframes fx-spin{to{--fx-angle:360deg}}
+
+/* ---------- main portfolio: nav, buttons, tags, bars, pills ---------- */
+header.nav{
+  border-bottom:1px solid transparent;
+  border-image:linear-gradient(90deg,transparent,var(--fx-a),var(--fx-b),var(--fx-c),var(--fx-d),transparent) 1;
+}
+nav.links a:hover{color:var(--fx-b);border-color:var(--fx-c)}
+.brand .dot{background:var(--fx-a);box-shadow:0 0 0 3px color-mix(in srgb,var(--fx-a) 25%,transparent),0 0 14px var(--fx-a);animation:fx-pulse 2.4s ease-in-out infinite}
+.role-tag{border-color:color-mix(in srgb,var(--fx-a) 45%,transparent);box-shadow:0 0 22px -8px color-mix(in srgb,var(--fx-a) 70%,transparent)}
+.role-tag .blip,.id-head .id-status .blip{background:var(--fx-a);box-shadow:0 0 10px var(--fx-a);animation:fx-pulse 2s ease-in-out infinite}
+@keyframes fx-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+.eyebrow{color:var(--fx-b)}
+.eyebrow::before{width:30px;height:2px;border-radius:2px;background:var(--fx-grad)}
+
+.btn-primary{
+  color:var(--fx-on);border-color:transparent;
+  background:var(--fx-grad);background-size:220% 100%;background-position:0% 50%;
+  box-shadow:0 10px 28px -10px color-mix(in srgb,var(--fx-a) 75%,transparent),0 0 0 1px color-mix(in srgb,var(--fx-b) 30%,transparent) inset;
+  transition:transform .2s,background-position .6s,box-shadow .3s;
+}
+[data-theme="professional"] .btn-primary{color:var(--fx-on)}
+.btn-primary:hover{background-position:100% 50%;box-shadow:0 14px 36px -10px color-mix(in srgb,var(--fx-c) 80%,transparent),0 0 24px -6px color-mix(in srgb,var(--fx-d) 60%,transparent)}
+.btn-ghost{transition:transform .2s,border-color .3s,box-shadow .3s,color .3s}
+.btn-ghost:hover{border-color:var(--fx-c);color:var(--fx-b);box-shadow:0 0 26px -8px color-mix(in srgb,var(--fx-c) 70%,transparent)}
+.contact-row a:hover,.cert-card .cert-link{color:var(--fx-b)}
+
+.bar-fill{background:linear-gradient(90deg,var(--fx-a),var(--fx-b),var(--fx-c),var(--fx-d),var(--fx-a));background-size:240% 100%;animation:fx-shift 5s linear infinite alternate;box-shadow:0 0 14px color-mix(in srgb,var(--fx-a) 70%,transparent)}
+.cert-icon{color:var(--fx-a);box-shadow:0 0 18px -6px color-mix(in srgb,var(--fx-a) 70%,transparent)}
+.pill,.tech-tag{transition:transform .2s,box-shadow .3s}
+.pill:hover,.tech-tag:hover{transform:translateY(-2px)}
+.pill:nth-child(4n+1){color:var(--fx-a);border-color:color-mix(in srgb,var(--fx-a) 40%,transparent);background:color-mix(in srgb,var(--fx-a) 10%,transparent)}
+.pill:nth-child(4n+2){color:var(--fx-b);border-color:color-mix(in srgb,var(--fx-b) 40%,transparent);background:color-mix(in srgb,var(--fx-b) 10%,transparent)}
+.pill:nth-child(4n+3){color:var(--fx-c);border-color:color-mix(in srgb,var(--fx-c) 45%,transparent);background:color-mix(in srgb,var(--fx-c) 12%,transparent)}
+.pill:nth-child(4n+4){color:var(--fx-d);border-color:color-mix(in srgb,var(--fx-d) 45%,transparent);background:color-mix(in srgb,var(--fx-d) 11%,transparent)}
+.pill:nth-child(4n+1):hover{box-shadow:0 0 18px -4px var(--fx-a)}
+.pill:nth-child(4n+2):hover{box-shadow:0 0 18px -4px var(--fx-b)}
+.pill:nth-child(4n+3):hover{box-shadow:0 0 18px -4px var(--fx-c)}
+.pill:nth-child(4n+4):hover{box-shadow:0 0 18px -4px var(--fx-d)}
+
+/* ---------- project pages ---------- */
+.kpis div{border-left-color:var(--fx-a)}
+.kpis div:nth-child(2){border-left-color:var(--fx-b)}
+.kpis div:nth-child(3){border-left-color:var(--fx-c)}
+.kpis div:nth-child(4){border-left-color:var(--fx-d)}
+.banner{box-shadow:0 0 40px -12px color-mix(in srgb,var(--fx-a) 70%,transparent)}
+.meter .bar i,.bar>i{background:var(--fx-grad)}
+a:focus-visible,button:focus-visible{outline-color:var(--fx-c)}
+
+/* Ain Shams demo */
+.hero:has(.hero-content){--fx-a:#35F0A0;--fx-b:#8FD8F0;--fx-c:#B79CFF;--fx-d:#FF6FD0;--fx-grad:linear-gradient(100deg,#35F0A0,#8FD8F0 34%,#B79CFF 68%,#FF6FD0);background:linear-gradient(135deg,#05080B 0%,#0B2733 45%,#2a1458 80%,#4a1a63 100%)}
+.header{border-bottom:2px solid transparent;border-image:linear-gradient(90deg,var(--fx-a),var(--fx-b),var(--fx-c),var(--fx-d)) 1}
+.hero-content h1 .highlight,.hero-content h1 span.highlight{background:var(--fx-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.faculty-card:hover{transform:translateY(-4px)}
+.hero-stat .number,.stat-number{background:var(--fx-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+@media (prefers-reduced-motion:reduce){
+  body::before,h1.name,.sec-title,.fx-text,.bar-fill,.id-card::before,.brand .dot,.role-tag .blip,.id-head .id-status .blip,html::after{animation:none!important}
+}
+@media (max-width:640px){body::before{animation:none}}
+
+/* ================= smoothness ================= */
+:root{--ease:cubic-bezier(.22,1,.36,1)}               /* soft ease-out, used by existing transitions */
+html{scroll-padding-top:84px;scrollbar-gutter:stable;-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* fade between pages (Chrome/Edge/Safari); other browsers just navigate normally */
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.32s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+
+/* theme changes: every surface eases its colors instead of snapping */
+.card,.id-card,.stat-box,.edu-card,.proj-featured,.panel,.tile,.kpis div,.cal,.meter,.pill,.tech-tag,.btn,.btn-ghost,header.nav,.edu-year,.bar-track{
+  transition-property:transform,box-shadow,border-color,background-color,background-position,color,opacity;
+  transition-duration:.35s;transition-timing-function:var(--ease);
+}
+.reveal{transition:opacity .8s var(--ease),transform .8s var(--ease);transform:translateY(22px)}
+.reveal.in{transform:none}
+.card.reveal,.proj-featured.reveal{transition:opacity .8s var(--ease),transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease),background-color .35s var(--ease)}
+a,button{transition:color .25s var(--ease),border-color .25s var(--ease),background-color .25s var(--ease),box-shadow .3s var(--ease),transform .25s var(--ease)}
+button:active,.btn:active{transform:scale(.97)}
+img{content-visibility:auto}
+
+@media (prefers-reduced-motion:reduce){
+  @view-transition{navigation:none}
+  html{scroll-behavior:auto}
+}
+
+/* ================= version switcher (Aurora <-> Amber) ================= */
+.fx-switch{
+  position:fixed;left:14px;bottom:14px;z-index:60;display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px 8px 12px;border-radius:999px;text-decoration:none;
+  font:600 12px/1 Inter,system-ui,-apple-system,sans-serif;letter-spacing:.02em;color:#E8EEF2;
+  background:rgba(8,10,12,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border:1px solid color-mix(in srgb,var(--fx-c) 55%,transparent);
+  box-shadow:0 8px 26px -10px color-mix(in srgb,var(--fx-c) 70%,transparent);
+  transition:transform .25s var(--ease,ease),box-shadow .3s,border-color .3s;
+}
+.fx-switch i{width:9px;height:9px;border-radius:50%;background:var(--other,#fff);box-shadow:0 0 10px var(--other,#fff)}
+.fx-switch:hover{transform:translateY(-2px);border-color:var(--other,#fff);box-shadow:0 12px 30px -10px var(--other,#fff)}
+@media print{.fx-switch{display:none}}
